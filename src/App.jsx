@@ -8,6 +8,7 @@ function App() {
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef(null);
   const [keyPressed, setKeyPressed] = useState("")
+  const [playerCoords, setPlayerCoords] = useState([0,0])
   useEffect(() => {
     // Focus the input element when the component mounts
     inputRef.current.focus();
@@ -19,7 +20,7 @@ function App() {
 
     // Attach the blur event listener
     inputRef.current.addEventListener('blur', handleBlur);
-
+    console.log("player coords: ",playerCoords)
     // Cleanup: Remove the event listener when the component is unmounted
     return () => {
       inputRef.current.removeEventListener('blur', handleBlur);
@@ -29,8 +30,12 @@ function App() {
 
   const handleOnKeyDown = (event) => {
      setKeyPressed(event.key)
+     
      event.target.value = event.key
-    console.log(keyPressed)
+    if (keyPressed.toLowerCase() == "d"){
+      const newCoords = [playerCoords[0] +1, playerCoords[1]]
+      setPlayerCoords(newCoords)
+    }
   }
   const grid = [
     ["0", "0", "0", "0","0", "0", "0", "0"],
@@ -42,8 +47,11 @@ function App() {
     ["0", "0", "0", "0","0", "0", "0", "0"],
     ["0", "0", "0", "0","0", "0", "0", "0"],
   ];
+
+
   return (
     <>
+    <h1>playercoords {playerCoords}</h1>
     <input
         type="text"
         ref={inputRef}
@@ -57,8 +65,16 @@ function App() {
           
             {row.map((value, xIndex) => (
               <Col key={xIndex} className="custom-col">
+              {console.log([xIndex,yIndex])}
+              {
+                playerCoords[0] == xIndex && playerCoords[1] == yIndex ? (
+                    <div className="cell player-cell">{yIndex}{xIndex}</div>
+                    
+                ) : (
+                  <div className="cell">{xIndex}{yIndex}</div>
+                )
+              }
               
-              <div className="cell"></div>
               
               </Col>
             ))}

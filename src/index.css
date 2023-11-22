@@ -52,3 +52,6 @@ body {
   margin: 0px;
   border:2px solid black;
 }
+.player-cell{
+  background-color: green !important;
+}
